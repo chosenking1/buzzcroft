@@ -1,6 +1,7 @@
 <?php
 use App\Http\Controllers\{
-    HomepageController
+    HomepageController,
+    TestController,
    };
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,6 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/',[HomepageController::class, 'index'])->name('homepage');;
+Route::get('/',[HomepageController::class, 'index'])->name('homepage');
+Route::get('test',[TestController::class, 'index'])->name('header');
 

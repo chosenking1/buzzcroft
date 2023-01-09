@@ -13,15 +13,14 @@
     <script></script> --}}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   @vite('resources/css/app.css')
-    
-</head>
+    </head>
 
 <body>
-    @yield('header')
- 
+    
+    @yield('layouts.header')
   		@yield('content')
  
-  	@include('layouts.footer')
+  	@yield('layouts.footer')
  
   
 </body>

@@ -1,27 +1,19 @@
 @extends('layouts.app')
 
 @section('header')
-<header>
-    <nav class=" navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">News Website</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Categories</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Contact</a>
-                </li>
-            </ul>
-        </div>
+<header class="bg-gray-300 py-3 px-4 flex justify-between items-center">
+    <div class="flex items-center">
+      <img src="/logo.svg" alt="Logo" class="w-8 h-8">
+      <h1 class="text-2xl font-bold ml-2">Buzzcroft</h1>
+    </div>
+    <nav>
+      <a href="#" class="px-3 font-semibold text-gray-800 hover:text-gray-700">Home</a>
+      <a href="#" class="px-3 font-semibold text-gray-800 hover:text-gray-700">Categories</a>
+      <a href="#" class="px-3 font-semibold text-gray-800 hover:text-gray-700">Contact</a>
     </nav>
-</header>
+  </header>
+  
+    
 @endsection
 
 
