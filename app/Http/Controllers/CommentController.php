@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use App\Models\Article;
+use App\Models\Comment;
 use Illuminate\Http\Request;
-use App\Articles;
-use App\Comments;
+
 
 
 class CommentController extends Controller
@@ -18,8 +18,8 @@ class CommentController extends Controller
             'article_id' => 'required|exists:articles,id',
         ]);
     
-        $article = Articles::find($request->article_id);
-        $comment = new Comments;
+        $article = Article::find($request->article_id);
+        $comment = new Comment;
         $comment->text = $request->text;
         $comment->username = $request->username;
         $article->comments()->save($comment);

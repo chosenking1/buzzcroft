@@ -15,7 +15,14 @@ return new class extends Migration
     {
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
+            $table->string('title');
+            $table->string('author');
+            $table->date('date_published');
+            $table->text('article_body');
+            // $table->unsignedBigInteger('category_id');
             $table->timestamps();
+    
+            // $table->foreign('category_id')->references('id')->on('categories');
         });
     }
 
