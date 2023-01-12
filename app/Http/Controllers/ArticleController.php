@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 class ArticleController extends Controller
 {
     //
+
+    public function create()
+    {
+        return view('admin.add_article');
+    }
+
     public function store(Request $request)
 {
     $validatedData = $request->validate([
