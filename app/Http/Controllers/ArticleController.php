@@ -39,5 +39,12 @@ class ArticleController extends Controller
     ]);
 }
 
+public function show(Article $article)
+{
+    $comments = $article->comments()->get();
+    return view('articles.show', compact('article', 'comments'));
+}
+
+
 
 }

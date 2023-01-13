@@ -28,4 +28,5 @@ Route::get('/add-article', [ArticleController::class,'create'])->name('add_artic
 Route::post('/api/articles', [ArticleController::class,'store'])->name('articles_store');
 Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register_view');
 Route::post('/api/user', [UserController::class,'register'])->name('register');
+Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 
