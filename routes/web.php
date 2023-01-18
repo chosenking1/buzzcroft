@@ -29,4 +29,7 @@ Route::post('/api/articles', [ArticleController::class,'store'])->name('articles
 Route::get('/register', [UserController::class, 'showRegistrationForm'])->name('register_view');
 Route::post('/api/user', [UserController::class,'register'])->name('register');
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
+Route::get('admin/register', [AdminController::class,'create'])->name('admin.register')->middleware('auth');
+Route::post('admin/register', [AdminController::class,'store'])->name('admin.register.store')->middleware('auth');
+Route::get('admin/removeAdmin/{user}', [AdminController::class,'removeAdmin'])->name('admin.removeAdmin')->middleware('auth');
 

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('password');
             
             $table->enum('gender', ['male', 'female']);
-            $table->enum('typeofuser', ['viewer', 'author','admin']);
+            $table->enum('typeofuser', ['viewer', 'author','admin'])->default('viewer');
    
             $table->rememberToken();
             $table->timestamps();

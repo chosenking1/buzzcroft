@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Article;
-
+use Goutte\Client;
 use Illuminate\Http\Request;
 
 class ArticleController extends Controller
@@ -45,6 +45,32 @@ public function show(Article $article)
     return view('articles.show', compact('article', 'comments'));
 }
 
+public function search1($query)
+{
+    $client = new Client();
+    $crawler = $client->request('GET', 'https://yourwebsite.com');
+    $articles = $crawler->filter('article')->each(function ($node) use ($query) {
+        if (strpos($node->text(), $query) !== false) {
+            return [
+                'title' => $node->filter('h2')->text(),
+                'url' => $node->filter('a')->attr('href'),
+                'excerpt' => $node->filter('p')->text(),
+            ];
+        }
+    });
 
+    $articles = array_filter($articles);
+
+    return view('search', ['articles' => $articles, 'query' => $query]);
+}
+
+public function search(Request $request)
+{
+    $searchTerm = $request->input('searchTerm');
+    $articles = Article::where('title', 'like', '%'.$searchTerm.'%')
+        ->orWhere('article_body', 'like', '%'.$searchTerm.'%')
+        ->get();
+    return view('articles.search-results', compact('articles', 'searchTerm'));
+}
 
 }
