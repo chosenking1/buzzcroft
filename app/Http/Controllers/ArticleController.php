@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Article;
+use App\Models\User;
 use Goutte\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
@@ -72,5 +74,54 @@ public function search(Request $request)
         ->get();
     return view('articles.search-results', compact('articles', 'searchTerm'));
 }
+
+public function destroy(Article $article)
+{
+    if(Auth::user()->isAdmin() || Auth::user()->isAuthor() && auth()->user()->id === $article->author_id) {
+        $article->delete();
+        return redirect()->route('articles.index')->with('success', 'Article deleted successfully');
+    }
+    else {
+        return redirect()->back()->with('error', 'You are not authorized to delete this article');
+    }
+}
+
+public function update(Request $request, Article $article)
+{
+    if(auth()->user()->isAdmin() || auth()->user()->isAuthor() && auth()->user()->id === $article->author_id) {
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'author' => 'required|max:255',
+            'date_published' => 'required|date',
+            'article_body' => 'required',
+        ]);
+        $article->update($validatedData);
+        return redirect()->route('articles.index')->with('success', 'Article updated successfully');
+    }
+    else {
+        return redirect()->back()->with('error', 'You are not authorized to update this article');
+    }
+}
+
+public function update(Article $article, Request $request)
+{
+    if(Auth::user()->isAdmin() || Auth::user()->id === $article->user_id){
+        $validatedData = $request->validate([
+            'title' => 'required|max:255',
+            'author' => 'required|max:255',
+            'date_published' => 'required|date',
+            'article_body' => 'required',
+        ]);
+
+        $article->title = $request->title;
+        $article->author = $request->author;
+        $article->date_published = $request->date_published;
+        $article->article_body = $request->article_body;
+        $article->save();
+        return redirect()->route('admin.articles')->with('status', 'Article updated successfully!');
+    }
+    return redirect()->back()->with('error', 'You are not authorized to perform this action');
+}
+
 
 }
