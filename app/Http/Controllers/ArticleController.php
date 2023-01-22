@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 use App\Models\Article;
 use App\Models\User;
+use App\Http\Middleware\IsAdmin;
 use Goutte\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+
 
 class ArticleController extends Controller
 {
@@ -16,8 +18,12 @@ class ArticleController extends Controller
         return view('admin.add_article');
     }
 
-    public function store(Request $request)
-{
+    public function store(Request $request){
+
+    if (!auth()->check() || !(auth()->user()->isAdmin() || auth()->user()->isAuthor())) {
+        return redirect()->back()->withErrors(['You are not authorized to create an article']);
+    }
+
     $validatedData = $request->validate([
         'title' => 'required|max:255',
         'author' => 'required|max:255',
@@ -25,12 +31,25 @@ class ArticleController extends Controller
         'article_body' => 'required',
     ]);
 
-    $article = new Article;
+    $article = new Article();
     $article->title = $request->title;
     $article->author = $request->author;
     $article->date_published = $request->date_published;
     $article->article_body = $request->article_body;
+    $article->video_url = $request->video_url;
+    if ($request->hasFile('pictures')) {
+        $pictures = $request->file('pictures');
+        $pictureArray = [];
+        foreach($pictures as $picture) {
+            $path = $picture->store('public/pictures');
+            $pictureArray[] = $path;
+        }
+        $article->pictures = json_encode($pictureArray);
+    }
+    $tags = explode(',', $request->tags);
+    $article->tags = json_encode($tags);
     $article->save();
+
 
     return response()->json([
         'id' => $article->id,
@@ -86,22 +105,22 @@ public function destroy(Article $article)
     }
 }
 
-public function update(Request $request, Article $article)
-{
-    if(auth()->user()->isAdmin() || auth()->user()->isAuthor() && auth()->user()->id === $article->author_id) {
-        $validatedData = $request->validate([
-            'title' => 'required|max:255',
-            'author' => 'required|max:255',
-            'date_published' => 'required|date',
-            'article_body' => 'required',
-        ]);
-        $article->update($validatedData);
-        return redirect()->route('articles.index')->with('success', 'Article updated successfully');
-    }
-    else {
-        return redirect()->back()->with('error', 'You are not authorized to update this article');
-    }
-}
+// public function update(Request $request, Article $article)
+// {
+//     if(auth()->user()->isAdmin() || auth()->user()->isAuthor() && auth()->user()->id === $article->author_id) {
+//         $validatedData = $request->validate([
+//             'title' => 'required|max:255',
+//             'author' => 'required|max:255',
+//             'date_published' => 'required|date',
+//             'article_body' => 'required',
+//         ]);
+//         $article->update($validatedData);
+//         return redirect()->route('articles.index')->with('success', 'Article updated successfully');
+//     }
+//     else {
+//         return redirect()->back()->with('error', 'You are not authorized to update this article');
+//     }
+// }
 
 public function update(Article $article, Request $request)
 {

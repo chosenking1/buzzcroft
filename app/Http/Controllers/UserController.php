@@ -5,6 +5,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -40,5 +41,25 @@ class UserController extends Controller
     {
         return view('user.register');
     }
+
+    public function showLoginForm()
+    {
+        return view('user.login');
+    }
+
+    public function login(Request $request)
+{
+    $validatedData = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:6'
+    ]);
+
+    if (!Auth::attempt(['email' => $request->email, 'password' => $request->password,'typeofuser' => 'viewer'])) {
+        return redirect()->back()->withErrors(['Invalid credentials']);
+    }
+
+    return redirect()->route('homepage');
+}
+
 
 }

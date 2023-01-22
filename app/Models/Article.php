@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Cohensive\Embed\Facades\Embed;
 
 class Article extends Model
 {
@@ -18,5 +19,16 @@ class Article extends Model
         return $this->belongsToMany('App\Comment');
     }
     
+    public function getVideoHtmlAttribute()
+    {
+        $embed = Embed::make($this->video_url)->parseUrl();
+
+        if (!$embed)
+            return '';
+
+        $embed->setAttribute(['width' => 400]);
+        return $embed->getHtml();
+    }
+
     use HasFactory;
 }

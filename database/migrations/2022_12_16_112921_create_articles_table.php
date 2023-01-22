@@ -19,6 +19,10 @@ return new class extends Migration
             $table->string('author');
             $table->date('date_published');
             $table->text('article_body');
+            $table->string('video_url');
+            $table->json('pictures');
+            $table->json('tags');
+
             // $table->unsignedBigInteger('category_id');
             $table->timestamps();
     

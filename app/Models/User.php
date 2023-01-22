@@ -29,11 +29,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    public function isAdmin()
-    {
-        return $this->typeofuser === 'admin';
-    }
-
+  
     /**
      * The attributes that should be cast.
      *
@@ -42,4 +38,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isAdmin()
+    {
+        return $this->typeofuser === 'admin';
+    }
+
+    public function isAuthor()
+    {
+        return $this->typeofuser === 'author';
+    }
 }

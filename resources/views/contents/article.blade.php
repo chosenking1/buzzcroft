@@ -7,16 +7,23 @@
       <p class="text-gray-600">by {{ $article->author }} on {{ $article->date_published }}</p>
     </div>
     
-    <div class="mb-4">
+    {{-- <div class="mb-4">
       <img src="{{ $article->featured_image }}" alt="Article featured image" class="w-full">
-    </div>
+    </div> --}}
     
     <div class="mb-4">
       {!! $article->article_body !!}
     </div>
-    
+
     <div class="mb-4">
-      <video src="{{ $article->featured_video }}" controls></video>
+      @foreach (json_decode($article->pictures) as $picture)
+        <img src="{{ asset('storage/'.$picture) }}" alt="Article picture" class="w-full mb-4">
+      @endforeach
+    </div>
+
+    <div class="mb-4">
+      {{-- <video src="{{ $article->featured_video }}" controls></video> --}}
+      {!! $article->videoHtml !!}
     </div>
     
     <div class="mb-4">

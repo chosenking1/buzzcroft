@@ -1,8 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-    <h1>Admin/Author Login</h1>
-    <form method="post" action="{{ route('admin.login') }}">
+    <h1>Login</h1>
+    <form method="post" action="{{ route('login') }}">
         @csrf
         <label for="email">Email:</label>
         <input type="email" name="email" id="email">

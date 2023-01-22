@@ -3,22 +3,32 @@
 namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     //
    
-
     public function create()
     {
         // Only authenticated admins can access this view
         $this->authorize('isAdmin');
-        return view('admin.register');
+        return view('auth.register');
     }
 
-    public function store(Request $request)
+    // public function showUpdateForm()
+    // {
+    //     return view('user.register');
+    // }
+
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+
+
+    public function register(Request $request)
     {
         // Only authenticated admins can register new users
         $this->authorize('isAdmin');
@@ -50,6 +60,23 @@ class AdminController extends Controller
         $user->update(['typeofuser'=>'viewer']);
         return redirect()->route('admin.index')->withSuccess("Successfully removed an admin!");
     }
+
+    public function adminLogin(Request $request)
+{
+    $validatedData = $request->validate([
+        'email' => 'required|email',
+        'password' => 'required|min:6'
+    ]);
+
+    if (!Auth::attempt(['email' => $request->email, 'password' => $request->password, 'typeofuser' => ['admin','author']])) {
+        return redirect()->back()->withErrors(['Invalid credentials']);
+    }
+
+    return redirect()->route('admin.home');
+}
+
+
+    
     
     public function __construct()
     {
