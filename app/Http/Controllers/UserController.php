@@ -47,19 +47,38 @@ class UserController extends Controller
         return view('user.login');
     }
 
-    public function login(Request $request)
+//     public function login(Request $request)
+// {
+//     $validatedData = $request->validate([
+//         'email' => 'required|email',
+//         'password' => 'required|min:6'
+//     ]);
+
+//     if (!Auth::attempt(['email' => $request->email, 'password' => $request->password,'typeofuser' => 'viewer'])) {
+//         return redirect()->back()->withErrors(['Invalid credentials']);
+//     }
+
+//     return redirect()->route('homepage');
+// }
+
+public function login(Request $request)
 {
     $validatedData = $request->validate([
         'email' => 'required|email',
         'password' => 'required|min:6'
     ]);
 
-    if (!Auth::attempt(['email' => $request->email, 'password' => $request->password,'typeofuser' => 'viewer'])) {
-        return redirect()->back()->withErrors(['Invalid credentials']);
+    if (Auth::attempt(['email' => $request->email, 'password' => $request->password])) {
+        $user = Auth::user();
+        if($user->typeofuser == 'admin' || $user->typeofuser == 'author')
+            return redirect()->route('add_article');
+        else
+            return redirect()->route('homepage');
     }
 
-    return redirect()->route('homepage');
+    return redirect()->back()->withErrors(['Invalid credentials']);
 }
+
 
 
 }

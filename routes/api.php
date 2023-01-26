@@ -1,6 +1,8 @@
 <?php
 use App\Http\Controllers\{
- HomepageController
+ HomepageController,
+ ArticleController,
+ CommentController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -20,5 +22,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('/api/articles', 'ArticleController@store');
+Route::post('/add_comment', [CommentController::class, 'create_comment'])->name('comments.store');
 
-Route::get('/',[HomepageController::class, 'index'])->name('homepage');
+// Route::get('/',[HomepageController::class, 'index'])->name('homepage');

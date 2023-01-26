@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 use App\Models\Article;
+use App\Models\Comment;
+use DB;
+use App\Http\Controllers\CommentController;
 use App\Models\User;
 use App\Http\Middleware\IsAdmin;
 use Goutte\Client;
@@ -51,19 +54,24 @@ class ArticleController extends Controller
     $article->save();
 
 
-    return response()->json([
-        'id' => $article->id,
-        'title' => $article->title,
-        'author' => $article->author,
-        'date_published' => $article->date_published,
-        'article_body' => $article->article_body,
-    ]);
+    // return response()->json([
+    //     'id' => $article->id,
+    //     'title' => $article->title,
+    //     'author' => $article->author,
+    //     'date_published' => $article->date_published,
+    //     'article_body' => $article->article_body,
+    // ]);
+    $articles = DB::table('articles')->orderBy('id', 'ASC')->limit(10)->get();
+
+    return view('contents.homepage', compact('articles'));
 }
 
 public function show(Article $article)
 {
-    $comments = $article->comments()->get();
-    return view('articles.show', compact('article', 'comments'));
+    $comments = Comment::where('article_id', $article->id)->get();
+    return view('contents.article', compact('article', 'comments'));
+        // return view('contents.article', compact('article'));
+
 }
 
 public function search1($query)
@@ -144,3 +152,5 @@ public function update(Article $article, Request $request)
 
 
 }
+
+

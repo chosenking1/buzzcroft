@@ -16,7 +16,7 @@ class Article extends Model
 
     public function comments()
     {
-        return $this->belongsToMany('App\Comment');
+        return $this->hasMany('App\Models\Comment');
     }
     
     public function getVideoHtmlAttribute()

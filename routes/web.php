@@ -5,9 +5,12 @@ use App\Http\Controllers\{
     ArticleController,
     UserController,
     AdminController,
+    CommentController,
 };
 use App\Models\Admin;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Session;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +40,12 @@ Route::post('/api/login_user', [UserController::class,'login'])->name('login');
 
 Route::get('/articles/{article}', [ArticleController::class, 'show'])->name('articles.show');
 
-Route::get('admin/register', [AdminController::class,'create'])->name('admin.register')->middleware('auth');
-Route::post('admin/register_admin', [AdminController::class,'store'])->name('admin.register.store')->middleware('auth');
-Route::get('admin/login', [AdminController::class,'showLoginForm'])->name('admin.login_view')->middleware('auth');
-Route::post('admin/login_admin', [AdminController::class,'login'])->name('admin.login')->middleware('auth');
+Route::get('admin/register', [AdminController::class,'create'])->name('admin.register')->middleware('isAdmin');
+Route::post('admin/register_admin', [AdminController::class,'store'])->name('admin.register.store')->middleware('isAdmin');
+Route::get('/admin_login', [AdminController::class,'showAdminLoginForm'])->name('admin.login_view');
+Route::post('/admin/login_admin', [AdminController::class,'adminLogin'])->name('admin.login')->middleware('isAdmin');
 
-Route::get('admin/removeAdmin/{user}', [AdminController::class,'removeAdmin'])->name('admin.removeAdmin')->middleware('auth');
+Route::get('admin/removeAdmin/{user}', [AdminController::class,'removeAdmin'])->name('admin.removeAdmin')->middleware('isAdmin');
 
+Route::post('/add_comment', [CommentController::class, 'create_comment'])->name('comments.store')->middleware('web');;
+// Route::post('/add_comment','CommentController@create_comment')->name('comments.store');

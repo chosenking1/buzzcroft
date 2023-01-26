@@ -22,9 +22,9 @@ class AdminController extends Controller
     //     return view('user.register');
     // }
 
-    public function showLoginForm()
+    public function showAdminLoginForm()
     {
-        return view('auth.login');
+        return view('admin.login');
     }
 
 

@@ -34,11 +34,12 @@
     </div>
     <div class="mb-4">
         <label for="video_url" class="block text-gray-700 text-sm font-bold mb-2">Video Url:</label>
-        <input type="file" name="video_url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        <input type="text" name="video_url" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     </div>
     <div class="mb-4">
         <label for="tags" class="block text-gray-700 text-sm font-bold mb-2">Tags:</label>
         <input type="text" name="tags" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
     </div>
     <div class="mb-4">
-        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium hover:translate-y-1">Add Article</button>
+    </div>
